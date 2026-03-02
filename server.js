@@ -6,8 +6,11 @@ const path = require('path');
 const fs = require('fs');
 const https = require('https'); // Required for API calls
 const http = require('http');   // Required for backup API calls
+const uploadDir = path.join(__dirname, 'uploads');
 
 const app = express();
+app.use(express.json());
+app.use(express.urlencoded({ extended: true }));
 const PORT = process.env.PORT || 3000;
 
 /* ── HELPERS FOR GEOLOCATION ── */
@@ -50,9 +53,13 @@ app.get('/api/locate', async (req, res) => {
   }
 });
 
+if (!fs.existsSync(uploadDir)) {
+  fs.mkdirSync(uploadDir, { recursive: true });
+}
+
 /* ── EXISTING: MULTER CONFIG ── */
 const upload = multer({
-  dest: 'uploads/',
+  dest: uploadDir,
   limits: { fileSize: 5 * 1024 * 1024 }, // 5 MB
   fileFilter(req, file, cb) {
     const allowed = ['.pdf', '.doc', '.docx'];
@@ -143,6 +150,6 @@ app.post('/submit', upload.single('cvFile'), async (req, res) => {
   }
 });
 
-app.listen(PORT, () => {
-  console.log(`✅  RankBait careers server running → http://localhost:${PORT}`);
+app.listen(PORT, '0.0.0.0', () => {
+  console.log(`Server running on ${PORT}`);
 });
