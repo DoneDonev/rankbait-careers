@@ -421,7 +421,7 @@ textarea { resize: vertical; min-height: 110px; }
   color: var(--navy);
   overflow: hidden;
   text-overflow: ellipsis;
-  white-space: nowrap;
+  white-space: wrap;
 }
 
 .file-remove {
