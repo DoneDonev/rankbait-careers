@@ -715,9 +715,12 @@ textarea { resize: vertical; min-height: 110px; }
 @media (max-width: 480px) {
   .dropzone-preview {
     padding: 12px 10px;
+    flex-wrap: wrap;
     gap: 8px;
   }
-  
+  #dropzone-preview{
+    flex-wrap: wrap;
+  }
   .file-name {
     font-size: 0.8rem;
   }
