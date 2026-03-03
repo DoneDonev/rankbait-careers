@@ -128,7 +128,7 @@ app.post('/submit', upload.single('cvFile'), async (req, res) => {
 
   try {
     await resend.emails.send({
-      from: 'RankBait Careers <onboarding@resend.dev>',
+      from: 'RankBait Careers <careers@rankbait.com>',
       to: process.env.RECEIVER_EMAIL,
       replyTo: email,
       subject: `[Application] ${position} — ${firstName} ${lastName}`,
