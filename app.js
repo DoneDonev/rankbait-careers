@@ -338,16 +338,8 @@ let uploadedFile = null;
 dropzone.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f) handleFile(f); });
 // dropzone.addEventListener('click', e => { if (e.target !== fileRemove) fileInput.click(); });
 dropzone.addEventListener('click', e => {
-  if (
-    e.target === fileRemove ||
-    dropPreview.style.display === 'flex' ||
-    dropPreview.contains(e.target)
-  ) return;
-  // If clicking the label or anything inside it, let the label handle it natively
-  if (e.target.tagName === 'LABEL' || e.target.closest('label')) {
-    e.stopPropagation();
-    return;
-  }
+  if (e.target === fileRemove) return;
+  if (dropPreview.style.display === 'flex' || dropPreview.contains(e.target)) return;
   fileInput.click();
 });
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
