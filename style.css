@@ -402,7 +402,7 @@ textarea { resize: vertical; min-height: 110px; }
 
 .dropzone-preview {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: wrap !important;
   align-items: center;
   gap: 8px;
   padding: 16px 20px;
