@@ -341,10 +341,13 @@ dropzone.addEventListener('click', e => {
   if (
     e.target === fileRemove ||
     dropPreview.style.display === 'flex' ||
-    dropPreview.contains(e.target) ||
-    e.target.tagName === 'LABEL' ||
-    e.target.closest('label')
+    dropPreview.contains(e.target)
   ) return;
+  // If clicking the label or anything inside it, let the label handle it natively
+  if (e.target.tagName === 'LABEL' || e.target.closest('label')) {
+    e.stopPropagation();
+    return;
+  }
   fileInput.click();
 });
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
