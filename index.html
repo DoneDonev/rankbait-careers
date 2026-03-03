@@ -353,11 +353,11 @@
           <div class="form-row">
             <div class="field-group">
               <label>Upload Your CV <span class="req">*</span></label>
+              <input type="file" id="cvFile" name="cvFile" accept=".pdf,.doc,.docx" hidden />
               <div class="dropzone" id="dropzone">
-                <input type="file" id="cvFile" name="cvFile" accept=".pdf,.doc,.docx" hidden />
                 <div class="dropzone-inner" id="dropzoneInner">
                   <!-- <div class="dropzone-icon">📄</div> -->
-                  <p class="dropzone-text"><strong>Drag & drop</strong> your CV here<br />or <label for="cvFile" class="dropzone-btn">click to upload</label></p>
+                  <p class="dropzone-text"><strong>Drag & drop</strong> your CV here<br />or <span class="dropzone-btn">click to upload</span></p>
                   <p class="dropzone-hint">PDF, DOC, DOCX — max 5 MB</p>
                 </div>
                 <div class="dropzone-preview" id="dropzonePreview" style="display:none">

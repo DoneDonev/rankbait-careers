@@ -337,9 +337,14 @@ let uploadedFile = null;
 
 dropzone.addEventListener('drop', e => { const f = e.dataTransfer.files[0]; if (f) handleFile(f); });
 // dropzone.addEventListener('click', e => { if (e.target !== fileRemove) fileInput.click(); });
+// dropzone.addEventListener('click', e => {
+//   if (e.target === fileRemove) return;
+//   if (dropPreview.style.display === 'flex' || dropPreview.contains(e.target)) return;
+//   fileInput.click();
+// });
 dropzone.addEventListener('click', e => {
-  if (e.target === fileRemove) return;
-  if (dropPreview.style.display === 'flex' || dropPreview.contains(e.target)) return;
+  if (e.target.closest('#fileRemove')) return;
+  if (dropPreview.style.display === 'flex') return;
   fileInput.click();
 });
 fileInput.addEventListener('change', () => { if (fileInput.files[0]) handleFile(fileInput.files[0]); });
