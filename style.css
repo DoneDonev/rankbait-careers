@@ -409,6 +409,7 @@ textarea { resize: vertical; min-height: 110px; }
 
 .file-name {
   flex: 1;
+  min-width: 0;
   font-size: 0.88rem;
   font-weight: 500;
   color: var(--navy);
@@ -418,12 +419,13 @@ textarea { resize: vertical; min-height: 110px; }
 }
 
 .file-remove {
+  flex-shrink: 0;
   background: none;
   border: none;
   cursor: pointer;
   color: rgba(18,22,99,0.4);
   font-size: 0.9rem;
-  padding: 4px 8px;
+  padding: 8px;
   border-radius: 4px;
   transition: color 0.2s, background 0.2s;
 }
@@ -703,3 +705,14 @@ textarea { resize: vertical; min-height: 110px; }
 .pl-flag { font-size: 1.1rem; width: 24px; text-align: center; }
 .pl-name { flex: 1; color: var(--navy); }
 .pl-dial { color: rgba(18,22,99,0.45); font-size: 0.8rem; }
+
+@media (max-width: 480px) {
+  .dropzone-preview {
+    padding: 12px 10px;
+    gap: 8px;
+  }
+  
+  .file-name {
+    font-size: 0.8rem;
+  }
+}
