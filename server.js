@@ -1,7 +1,9 @@
 require('dotenv').config();
 const express = require('express');
 const multer = require('multer');
-const nodemailer = require('nodemailer');
+// const nodemailer = require('nodemailer');
+const { Resend } = require('resend');
+const resend = new Resend(process.env.RESEND_API_KEY);
 const path = require('path');
 const fs = require('fs');
 const https = require('https'); // Required for API calls
@@ -20,7 +22,7 @@ function fetchExternal(url, module) {
       let data = '';
       res.on('data', chunk => data += chunk);
       res.on('end', () => {
-        try { resolve(JSON.parse(data)); } 
+        try { resolve(JSON.parse(data)); }
         catch (e) { reject(e); }
       });
     }).on('error', reject);
@@ -30,13 +32,13 @@ function fetchExternal(url, module) {
 /* ── NEW ROUTE: IP GEOLOCATION PROXY ── */
 app.get('/api/locate', async (req, res) => {
   // Get the real client IP (Railway puts it in x-forwarded-for)
-  const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() 
-                || req.socket.remoteAddress;
+  const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim()
+    || req.socket.remoteAddress;
 
   try {
     const data = await fetchExternal(`https://ipapi.co/${clientIP}/json/`, https);
     if (data.error) throw new Error('Primary limit reached');
-    
+
     res.json({
       country_code: data.country_code,
       country_name: data.country_name
@@ -76,16 +78,6 @@ const upload = multer({
 
 app.use(express.static(__dirname));
 
-const transporter = nodemailer.createTransport({
-  host: 'smtp.gmail.com',
-  port: 587,
-  secure: false,
-  requireTLS: true,
-  auth: {
-    user: process.env.GMAIL_USER,
-    pass: process.env.GMAIL_PASS
-  }
-});
 
 /* ── EXISTING: FORM SUBMISSION ── */
 app.post('/submit', upload.single('cvFile'), async (req, res) => {
@@ -135,15 +127,15 @@ app.post('/submit', upload.single('cvFile'), async (req, res) => {
   `;
 
   try {
-    await transporter.sendMail({
-      from:    `"RankBait Careers" <${process.env.GMAIL_USER}>`,
-      to:      process.env.RECEIVER_EMAIL,
+    await resend.emails.send({
+      from: 'RankBait Careers <onboarding@resend.dev>',
+      to: process.env.RECEIVER_EMAIL,
       replyTo: email,
       subject: `[Application] ${position} — ${firstName} ${lastName}`,
-      html:    htmlBody,
+      html: htmlBody,
       attachments: [{
         filename: cvFile.originalname,
-        path:     cvFile.path
+        content: fs.readFileSync(cvFile.path)
       }]
     });
     fs.unlinkSync(cvFile.path);
