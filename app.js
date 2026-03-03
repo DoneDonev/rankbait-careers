@@ -295,10 +295,7 @@ fetch('/api/locate')
     return r.json();
   })
   .then(data => {
-    // 1. Update Phone Prefix
     setPrefix(data.country_code);
-
-    // 2. Update Country Dropdown (Matches by Name or Value)
     const sel = document.getElementById('country');
     if (sel && data.country_name) {
       const match = Array.from(sel.options).find(o => 
@@ -310,9 +307,11 @@ fetch('/api/locate')
   })
   .catch(err => {
     console.error('Detection failed:', err);
-    setPrefix('US'); // Hard fallback to US
+    setPrefix('US');
+    const sel = document.getElementById('country');
+    if (sel) sel.value = ''; // reset to blank/none
   });
-
+  
 /* ── DOM refs ──────────────────────────── */
 const form         = document.getElementById('applicationForm');
 const dropzone     = document.getElementById('dropzone');

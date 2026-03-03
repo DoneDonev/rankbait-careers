@@ -29,9 +29,12 @@ function fetchExternal(url, module) {
 
 /* ── NEW ROUTE: IP GEOLOCATION PROXY ── */
 app.get('/api/locate', async (req, res) => {
+  // Get the real client IP (Railway puts it in x-forwarded-for)
+  const clientIP = req.headers['x-forwarded-for']?.split(',')[0].trim() 
+                || req.socket.remoteAddress;
+
   try {
-    // Attempt 1: ipapi.co (HTTPS)
-    const data = await fetchExternal('https://ipapi.co/json/', https);
+    const data = await fetchExternal(`https://ipapi.co/${clientIP}/json/`, https);
     if (data.error) throw new Error('Primary limit reached');
     
     res.json({
@@ -41,8 +44,7 @@ app.get('/api/locate', async (req, res) => {
   } catch (err) {
     console.warn('Primary Geo API failed, trying backup...');
     try {
-      // Attempt 2: ip-api.com (HTTP - standard for their free tier)
-      const backup = await fetchExternal('http://ip-api.com/json/', http);
+      const backup = await fetchExternal(`http://ip-api.com/json/${clientIP}`, http);
       res.json({
         country_code: backup.countryCode,
         country_name: backup.country
