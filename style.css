@@ -355,6 +355,8 @@ textarea { resize: vertical; min-height: 110px; }
   transition: border-color 0.2s, background 0.2s;
   cursor: pointer;
   position: relative;
+  overflow: hidden; 
+  width: 100%;  
 }
 
 .dropzone.drag-over {
@@ -403,6 +405,8 @@ textarea { resize: vertical; min-height: 110px; }
   align-items: center;
   gap: 12px;
   padding: 16px 20px;
+  width: 100%;
+  overflow: hidden;
 }
 
 .file-icon { font-size: 1.4rem; }
@@ -416,6 +420,7 @@ textarea { resize: vertical; min-height: 110px; }
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
+  max-width: calc(100% - 80px);
 }
 
 .file-remove {
